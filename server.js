@@ -7,6 +7,9 @@ const res = require('express/lib/response.js');
 
 const app = express();
 
+const session = require('express-session');
+const passport = require('passport');
+
 fccTesting(app); //For FCC testing purposes
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use(express.json());
@@ -23,3 +26,13 @@ app.listen(PORT, () => {
 
 app.set('view engine', 'pug');
 app.set('views', './views/pug');
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
